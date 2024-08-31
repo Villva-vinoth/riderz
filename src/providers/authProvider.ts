@@ -10,7 +10,13 @@ export const authProvider: AuthProvider = {
       const response = await axios.post(`${LOGIN}`, {
         user_name,
         password,
-      });
+      },
+      {
+        headers:{
+           'ngrok-skip-browser-warning': 'true'
+        }
+      }
+    );
 
       const { token, role, user_id, ...user } = response.data;
       if (token) {
@@ -94,6 +100,8 @@ export const authProvider: AuthProvider = {
     const response = await axios.get(`${GET_CURRENT_USER}${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
+
       },
     });
 

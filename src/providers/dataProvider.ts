@@ -12,9 +12,11 @@ interface ErrorResponse {
 export const dataProvider: DataProvider = {
   getOne: async ({ resource, id, meta }) => {
     const token = localStorage.getItem(TOKEN_KEY);
-    const response = await axios.get(`${API_URL}/${resource}/show/${id}`, {
+    const response = await axios.get(`${API_URL}/api/${resource}/show/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
+
       },
     });
     const data = response.data.data;
@@ -29,6 +31,8 @@ export const dataProvider: DataProvider = {
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
+
         },
       }
     );
@@ -39,9 +43,11 @@ export const dataProvider: DataProvider = {
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
     const token = localStorage.getItem(TOKEN_KEY);
     console.log("re", resource);
-    const response = await axios.get(`${API_URL}/${resource}/list`, {
+    const response = await axios.get(`${API_URL}/api/${resource}/list`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
+
       },
     });
 
@@ -58,11 +64,13 @@ export const dataProvider: DataProvider = {
     const token = localStorage.getItem(TOKEN_KEY);
     try {
       const response = await axios.post(
-        `${API_URL}/${resource}/create`,
+        `${API_URL}/api/${resource}/create`,
         variables,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true'
+
           },
         }
       );

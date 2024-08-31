@@ -24,18 +24,19 @@ export const ListRole = () => {
         field: "role_name",
         headerName: "Role",
         type: "string",
-        width: 350,
-        // flex: 1,
+        // width: 350,
+        flex: 1,
       },
       {
         field: "created_at",
         headerName: "Create At",
-        width: 200,
+        // width: 200,
+        flex:1
       },
       {
         field: "action",
         headerName: "Actions",
-        Width: 200,
+        minWidth: 150,
         flex: 1,
         renderCell: ({ row }) => {
           const id = row.role_id;

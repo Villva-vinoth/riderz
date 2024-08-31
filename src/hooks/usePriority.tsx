@@ -20,10 +20,12 @@ export const usePriority = () => {
       try {
         const token = localStorage.getItem(TOKEN_KEY);
         const response = await axios.get(
-          `${API_URL}/permissions/showRole/${role}`,
+          `${API_URL}/api/permissions/showRole/${role}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true'
+
             },
           }
         );
@@ -51,6 +53,7 @@ export const usePriority = () => {
     };
 
     const role = localStorage.getItem("role");
+    console.log(role)
     if (role) {
       fetchPermissions(role);
     }
