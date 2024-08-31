@@ -1,4 +1,6 @@
-export const API_URL = 'http://localhost:4000/api'
+// export const API_URL = 'http://localhost:4000/api'
+
+export const API_URL = 'https://31f0-2401-4900-1ce2-7dbe-4575-86b6-ba94-aa.ngrok-free.app/api'
 
 export const LOGIN = API_URL +'/auth/login'
 
