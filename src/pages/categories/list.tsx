@@ -40,7 +40,7 @@ export const CategoryList = () => {
         },
         align: "center",
         headerAlign: "center",
-        minWidth: 80,
+        minWidth: 100,
       },
     ],
     []

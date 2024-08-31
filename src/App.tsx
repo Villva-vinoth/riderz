@@ -1,5 +1,5 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
+import { Authenticated, Refine } from "@refinedev/core";
+import { DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
@@ -17,31 +17,53 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { authProvider } from "./authProvider";
+import { Dashboard } from "./components/dashboard/Dashboard";
 import { Header } from "./components/header";
+import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
-import { Register } from "./pages/register";
+import { CreatePermission, ListPermission, ShowPermission } from "./pages/permissions";
+import { CreateRole, EditRole, ListRole, ShowRole } from "./pages/Role";
+import { CreateUser, EditUser, ListUser } from "./pages/User";
+import { ShowUser } from "./pages/User/ShowUser";
+import { authProvider } from "./providers/authProvider";
+import { dataProvider } from "./providers/dataProvider";
+import { usePriority } from "./hooks/usePriority";
 
 function App() {
+
+  const responsibilityRes = usePriority();
+
+  // const resource = [
+  //   // {
+  //   //   name: "roles",
+  //   //   list: "/roles",
+  //   //   create: "/roles/create",
+  //   //   edit: "/roles/edit/:id",
+  //   //   show: "/roles/show/:id",
+  //   // },
+  //   // {
+  //   //   name: "admin_users",
+  //   //   list: "/admin_users",
+  //   //   create: "/admin_users/create",
+  //   //   edit: "/admin_users/edit/:id",
+  //   //   show: "/admin_users/show/:id",
+  //   // },
+  //   // {
+  //   //   name: "permissions",
+  //   //   list: "/permissions",
+  //   //   create: "/permissions/create",
+  //   //   // edit: "/admin_users/edit/:id",
+  //   //   show: "/permissions/show/:id",
+  //   // },
+  // ]
+
+  const resourceNames = responsibilityRes.map(r => r.name);
+
+
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <CssBaseline />
@@ -49,32 +71,11 @@ function App() {
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                dataProvider={dataProvider}
                 notificationProvider={notificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
-                resources={[
-                  {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
+                resources={responsibilityRes}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -89,30 +90,38 @@ function App() {
                         key="authenticated-inner"
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <ThemedLayoutV2 Header={Header}>
+                        <ThemedLayoutV2 Header={Header} Title={CustomHeader}>
                           <Outlet />
                         </ThemedLayoutV2>
                       </Authenticated>
                     }
                   >
-                    <Route
-                      index
-                      element={<NavigateToResource resource="blog_posts" />}
-                    />
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
+                    <Route path="/" element={<Dashboard />} />
+
+                    <Route path="/roles">
+                      <Route index element={<ListRole />} />
+                      <Route path="create" element={<CreateRole />} />
+                      <Route path="edit/:id" element={<EditRole />} />
+                      <Route path="show/:id" element={<ShowRole />} />
                     </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
+
+                    <Route path="/admin_users">
+                      <Route index element={<ListUser />} />
+                      <Route path="create" element={<CreateUser />} />
+                      <Route path="edit/:id" element={<EditUser />} />
+                      <Route path="show/:id" element={<ShowUser />} />
                     </Route>
+
+                    <Route path="/permissions">
+                      <Route index element={<ListPermission />} />
+                        <Route path="create" element={<CreatePermission resourceNames={resourceNames}/>} />
+                      {/* <Route path="edit/:id" element={<EditUser />} /> */}
+                      <Route path="show/:id" element={<ShowPermission />} />
+                    </Route>
+
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
+
                   <Route
                     element={
                       <Authenticated
@@ -124,11 +133,11 @@ function App() {
                     }
                   >
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
+                    {/* <Route path="/register" element={<Register />} /> */}
+                    {/* <Route
                       path="/forgot-password"
                       element={<ForgotPassword />}
-                    />
+                    /> */}
                   </Route>
                 </Routes>
 
@@ -136,7 +145,7 @@ function App() {
                 <UnsavedChangesNotifier />
                 <DocumentTitleHandler />
               </Refine>
-              <DevtoolsPanel />
+              {/* <DevtoolsPanel /> */}
             </DevtoolsProvider>
           </RefineSnackbarProvider>
         </ColorModeContextProvider>

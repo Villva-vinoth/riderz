@@ -1,12 +1,18 @@
 import { AuthPage } from "@refinedev/mui";
+import { CustomLogo } from "./CustomLogo";
 
 export const Login = () => {
   return (
     <AuthPage
       type="login"
+      title={<CustomLogo />}
+      registerLink={false}
+      forgotPasswordLink={false}
       formProps={{
-        defaultValues: { email: "demo@refine.dev", password: "demodemo" },
+        defaultValues: { UserName: "", password: "" },
       }}
     />
   );
 };
+
+
