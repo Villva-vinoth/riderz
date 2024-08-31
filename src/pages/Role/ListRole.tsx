@@ -16,7 +16,7 @@ export const ListRole = () => {
     () => [
       {
         field: "role_id",
-        headerName: "sno",
+        headerName: "ID",
         type: "number",
         width: 100,
       },
@@ -24,14 +24,12 @@ export const ListRole = () => {
         field: "role_name",
         headerName: "Role",
         type: "string",
-        // width: 350,
         flex: 1,
       },
       {
         field: "created_at",
         headerName: "Create At",
-        // width: 200,
-        flex:1
+        flex: 1,
       },
       {
         field: "action",
@@ -40,20 +38,25 @@ export const ListRole = () => {
         flex: 1,
         renderCell: ({ row }) => {
           const id = row.role_id;
-          console.log(row.role_id !== role);
+
           return (
             <>
               <ShowButton hideText recordItemId={id} />
-              <EditButton
-                hideText
-                recordItemId={id}
-                disabled={row.row_id == role}
-              />
-              <DeleteButton
-                hideText
-                recordItemId={id}
-                disabled={row.role_id == role}
-              />
+              {role == "1" && (
+                <>
+                  <EditButton
+                    hideText
+                    recordItemId={id}
+                    // disabled={row.row_id == role}
+                    disabled={row.role_id == role}
+                  />
+                  <DeleteButton
+                    hideText
+                    recordItemId={id}
+                    disabled={row.role_id == role}
+                  />
+                </>
+              )}
             </>
           );
         },

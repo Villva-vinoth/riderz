@@ -10,13 +10,13 @@ import React from "react";
 export const ListUser = () => {
   const { dataGridProps } = useDataGrid();
 
-  const role = localStorage.getItem('role')
+  const role = localStorage.getItem("role");
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
         field: "user_id",
-        headerName: "sno",
+        headerName: "Id",
         type: "number",
       },
       {
@@ -24,7 +24,7 @@ export const ListUser = () => {
         headerName: "Name",
         type: "string",
         // width:200
-        flex:1,
+        flex: 1,
       },
       {
         field: "roles.role_name",
@@ -35,7 +35,7 @@ export const ListUser = () => {
       {
         field: "created_at",
         headerName: "Create At",
-        width:200
+        width: 200,
       },
       {
         field: "action",
@@ -45,8 +45,20 @@ export const ListUser = () => {
           return (
             <>
               <ShowButton hideText recordItemId={id} />
-              <EditButton hideText recordItemId={id} />
-              <DeleteButton hideText recordItemId={id}  disabled={row.role == role}/>
+              {role == "1" && (
+                <>
+                  <EditButton
+                    hideText
+                    recordItemId={id}
+                    disabled={row.role == role}
+                  />
+                  <DeleteButton
+                    hideText
+                    recordItemId={id}
+                    disabled={row.role == role}
+                  />
+                </>
+              )}
             </>
           );
         },
@@ -65,8 +77,6 @@ export const ListUser = () => {
         getRowId={(row) => row.user_id}
         // onRowClick={(row)=>}
       />
-
-      
     </List>
   );
 };

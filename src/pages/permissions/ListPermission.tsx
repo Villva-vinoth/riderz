@@ -10,11 +10,13 @@ import React from "react";
 export const ListPermission = () => {
   const { dataGridProps } = useDataGrid();
 
+  const role = localStorage.getItem("role");
+
   const columns = React.useMemo<GridColDef[]>(
     () => [
       {
         field: "permission_id",
-        headerName: "sno",
+        headerName: "ID",
         type: "number",
       },
       {
@@ -43,8 +45,16 @@ export const ListPermission = () => {
           return (
             <>
               <ShowButton hideText recordItemId={id} />
-              <EditButton hideText recordItemId={id} />
-              <DeleteButton hideText recordItemId={id} />
+              <EditButton
+                hideText
+                recordItemId={id}
+                disabled={row.role == role}
+              />
+              <DeleteButton
+                hideText
+                recordItemId={id}
+                disabled={row.role == role}
+              />
             </>
           );
         },

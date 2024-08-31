@@ -22,17 +22,21 @@ import { Dashboard } from "./components/dashboard/Dashboard";
 import { Header } from "./components/header";
 import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import { usePriority } from "./hooks/usePriority";
 import { Login } from "./pages/login";
-import { CreatePermission, ListPermission, ShowPermission } from "./pages/permissions";
+import {
+  CreatePermission,
+  EditPermission,
+  ListPermission,
+  ShowPermission,
+} from "./pages/permissions";
 import { CreateRole, EditRole, ListRole, ShowRole } from "./pages/Role";
 import { CreateUser, EditUser, ListUser } from "./pages/User";
 import { ShowUser } from "./pages/User/ShowUser";
 import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
-import { usePriority } from "./hooks/usePriority";
 
 function App() {
-
   const responsibilityRes = usePriority();
 
   // const resource = [
@@ -59,8 +63,7 @@ function App() {
   //   // },
   // ]
 
-  const resourceNames = responsibilityRes.map(r => r.name);
-
+  const resourceNames = responsibilityRes.map((r) => r.name);
 
   return (
     <BrowserRouter>
@@ -114,8 +117,13 @@ function App() {
 
                     <Route path="/permissions">
                       <Route index element={<ListPermission />} />
-                        <Route path="create" element={<CreatePermission resourceNames={resourceNames}/>} />
-                      {/* <Route path="edit/:id" element={<EditUser />} /> */}
+                      <Route
+                        path="create"
+                        element={
+                          <CreatePermission resourceNames={resourceNames} />
+                        }
+                      />
+                      <Route path="edit/:id" element={<EditPermission resourceNames={resourceNames} />} />
                       <Route path="show/:id" element={<ShowPermission />} />
                     </Route>
 

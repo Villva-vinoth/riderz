@@ -18,7 +18,7 @@ interface FormValues {
   canShow: boolean;
 }
 interface CreatePermissionProps {
-  resourceNames: string[]; // Add this interface for the prop type
+  resourceNames: string[];
 }
 
 export const CreatePermission: React.FC<CreatePermissionProps> = ({
@@ -51,9 +51,11 @@ export const CreatePermission: React.FC<CreatePermissionProps> = ({
             <Autocomplete
               {...field}
               options={resourceNames}
-              getOptionLabel={(option) => typeof option === 'string' ? option : ''}  
-              value={ field.value || null}  
-              onChange={(_, value) => field.onChange(value || null)} 
+              getOptionLabel={(option) =>
+                typeof option === "string" ? option : ""
+              }
+              value={field.value || null}
+              onChange={(_, value) => field.onChange(value || null)}
               isOptionEqualToValue={(option, value) => option === value}
               renderInput={(params) => (
                 <TextField
@@ -80,7 +82,7 @@ export const CreatePermission: React.FC<CreatePermissionProps> = ({
               {...roleAutoCompleteProps}
               {...field}
               onChange={(_, value) => {
-                field.onChange( value ? value.role_id : null);
+                field.onChange(value ? value.role_id : null);
               }}
               getOptionLabel={(item) => {
                 return (
@@ -100,7 +102,9 @@ export const CreatePermission: React.FC<CreatePermissionProps> = ({
                   typeof value === "object"
                     ? value?.role_id?.toString()
                     : value?.toString();
-                return value === undefined || value ==null   || optionId === valueId;
+                return (
+                  value === undefined || value == null || optionId === valueId
+                );
               }}
               renderInput={(params) => (
                 <TextField
@@ -154,8 +158,6 @@ export const CreatePermission: React.FC<CreatePermissionProps> = ({
             />
           )}
         />
-
-        
 
         <Controller
           control={control}

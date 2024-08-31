@@ -15,8 +15,7 @@ export const dataProvider: DataProvider = {
     const response = await axios.get(`${API_URL}/api/${resource}/show/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'ngrok-skip-browser-warning': 'true'
-
+        "ngrok-skip-browser-warning": "true",
       },
     });
     const data = response.data.data;
@@ -26,13 +25,12 @@ export const dataProvider: DataProvider = {
     const token = localStorage.getItem(TOKEN_KEY);
     console.log("re", resource);
     const response = await axios.patch(
-      `${API_URL}/${resource}/${id}`,
+      `${API_URL}/api/${resource}/edit/${id}`,
       variables,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'ngrok-skip-browser-warning': 'true'
-
+          "ngrok-skip-browser-warning": "true",
         },
       }
     );
@@ -46,14 +44,12 @@ export const dataProvider: DataProvider = {
     const response = await axios.get(`${API_URL}/api/${resource}/list`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'ngrok-skip-browser-warning': 'true'
-
+        "ngrok-skip-browser-warning": "true",
       },
     });
 
     if (response.status < 200 || response.status > 299) throw response;
     const data = await response.data.data;
-    // console.log(data);
     return {
       data,
       total: data.length,
@@ -69,8 +65,7 @@ export const dataProvider: DataProvider = {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'ngrok-skip-browser-warning': 'true'
-
+            "ngrok-skip-browser-warning": "true",
           },
         }
       );
@@ -83,7 +78,8 @@ export const dataProvider: DataProvider = {
       if (axios.isAxiosError(error)) {
         const { response } = error as AxiosError<ErrorResponse>;
         if (response) {
-          const errorMessages = response.data.message.split(',')[0] || "An error occurred";
+          const errorMessages =
+            response.data.message.split(",")[0] || "An error occurred";
           throw new Error(`${errorMessages}`);
         } else {
           throw new Error("Network or server error occurred");
@@ -93,8 +89,35 @@ export const dataProvider: DataProvider = {
       }
     }
   },
-  deleteOne: () => {
-    throw new Error("Function not implemented.");
+  deleteOne: async ({ resource, id }) => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    try {
+
+      // http://localhost:4000/api/admin_users/delete/3
+      const response = await axios.delete(
+        `${API_URL}/api/${resource}/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
+      const data = response.data.data;
+      return { data };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const { response } = error as AxiosError<ErrorResponse>;
+        if (response) {
+          const errorMessages = response?.data.message || "An Error Occured !";
+          throw new Error(`${errorMessages}`);
+        } else {
+          throw new Error("An Network error Occured !");
+        }
+      } else {
+        throw new Error("An unknown error occured");
+      }
+    }
   },
   getApiUrl: function (): string {
     throw new Error("Function not implemented.");
