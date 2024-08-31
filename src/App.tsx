@@ -23,6 +23,7 @@ import { Header } from "./components/header";
 import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { usePriority } from "./hooks/usePriority";
+import BookingForm from "./pages/bookings/Bookings";
 import { Login } from "./pages/login";
 import {
   CreatePermission,
@@ -38,6 +39,14 @@ import { dataProvider } from "./providers/dataProvider";
 
 function App() {
   const responsibilityRes = usePriority();
+
+  const res = [
+    {
+      name: "booking",
+      list: "/bookings",
+    },
+    ...responsibilityRes,
+  ];
 
   // const resource = [
   //   // {
@@ -78,7 +87,7 @@ function App() {
                 notificationProvider={notificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
-                resources={responsibilityRes}
+                resources={res}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -100,6 +109,9 @@ function App() {
                     }
                   >
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/bookings">
+                    <Route index element={<BookingForm />} />
+                    </Route>
 
                     <Route path="/roles">
                       <Route index element={<ListRole />} />
@@ -123,7 +135,12 @@ function App() {
                           <CreatePermission resourceNames={resourceNames} />
                         }
                       />
-                      <Route path="edit/:id" element={<EditPermission resourceNames={resourceNames} />} />
+                      <Route
+                        path="edit/:id"
+                        element={
+                          <EditPermission resourceNames={resourceNames} />
+                        }
+                      />
                       <Route path="show/:id" element={<ShowPermission />} />
                     </Route>
 
