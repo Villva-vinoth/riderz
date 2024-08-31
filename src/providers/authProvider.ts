@@ -55,25 +55,32 @@ export const authProvider: AuthProvider = {
   check: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
 
-    try {
-      const response = await axios.get(CHECK_API, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    // try {
+    //   const response = await axios.get(CHECK_API, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
 
-      if (response.status >= 200 && response.status < 299) {
-        return {
-          authenticated: true,
-        };
-      }
-    } catch (error) {
-      console.error("Check API error:", error);
+    //   if (response.status >= 200 && response.status < 299) {
+    //     return {
+    //       authenticated: true,
+    //     };
+    //   }
+    // } catch (error) {
+    //   console.error("Check API error:", error);
+    //   return {
+    //     authenticated: false,
+    //     redirectTo: "/login",
+    //   };
+    // }
+
+    if(token){
       return {
-        authenticated: false,
-        redirectTo: "/login",
+        authenticated: true,
       };
     }
+    
 
     return {
       authenticated: false,
