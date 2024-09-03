@@ -120,6 +120,6 @@ export const dataProvider: DataProvider = {
     }
   },
   getApiUrl: function (): string {
-    throw new Error("Function not implemented.");
+    return API_URL;
   },
 };

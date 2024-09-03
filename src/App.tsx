@@ -23,7 +23,7 @@ import { Header } from "./components/header";
 import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { usePriority } from "./hooks/usePriority";
-import BookingForm from "./pages/bookings/Bookings";
+import { CreateCategory, ListCategory } from "./pages/categories";
 import { Login } from "./pages/login";
 import {
   CreatePermission,
@@ -32,18 +32,35 @@ import {
   ShowPermission,
 } from "./pages/permissions";
 import { CreateRole, EditRole, ListRole, ShowRole } from "./pages/Role";
+import { CreateSubCategory, ListSubCategory } from "./pages/subCategories";
 import { CreateUser, EditUser, ListUser } from "./pages/User";
 import { ShowUser } from "./pages/User/ShowUser";
 import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
+import { CreateVehicleCategory, ListVehicleCategory } from "./pages/vehicleCategories";
 
 function App() {
   const responsibilityRes = usePriority();
 
   const res = [
+    // {
+    //   name: "booking",
+    //   list: "/bookings",
+    // },
     {
-      name: "booking",
-      list: "/bookings",
+      name: "categories",
+      list: "/categories",
+      create: "/categories/create",
+    },
+    {
+      name: "sub_categories",
+      list: "/sub_categories",
+      create: "/sub_categories/create",
+    },
+    {
+      name: "vehicle_categories",
+      list: "/vehicle_categories",
+      create: "/vehicle_categories/create",
     },
     ...responsibilityRes,
   ];
@@ -72,7 +89,7 @@ function App() {
   //   // },
   // ]
 
-  const resourceNames = responsibilityRes.map((r) => r.name);
+  const resourceNames = res.map((r) => r.name);
 
   return (
     <BrowserRouter>
@@ -109,9 +126,9 @@ function App() {
                     }
                   >
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/bookings">
+                    {/* <Route path="/bookings">
                     <Route index element={<BookingForm />} />
-                    </Route>
+                    </Route> */}
 
                     <Route path="/roles">
                       <Route index element={<ListRole />} />
@@ -142,6 +159,21 @@ function App() {
                         }
                       />
                       <Route path="show/:id" element={<ShowPermission />} />
+                    </Route>
+
+                    <Route path="/categories">
+                      <Route index element={<ListCategory />} />
+                      <Route path="create" element={<CreateCategory />} />
+                    </Route>
+
+                    <Route path="/sub_categories">
+                      <Route index element={<ListSubCategory />} />
+                      <Route path="create" element={<CreateSubCategory />} />
+                    </Route>
+
+                    <Route path="/vehicle_Categories">
+                        <Route index element={<ListVehicleCategory />} />
+                        <Route path="create" element={<CreateVehicleCategory />} />
                     </Route>
 
                     <Route path="*" element={<ErrorComponent />} />

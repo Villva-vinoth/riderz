@@ -1,29 +1,31 @@
 import type { AuthProvider } from "@refinedev/core";
 import axios from "axios";
-import { CHECK_API, GET_CURRENT_USER, LOGIN } from "../constant";
+import { GET_CURRENT_USER, LOGIN } from "../constant";
 
 export const TOKEN_KEY = "refine-auth";
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
     try {
       const user_name = email.split("@")[0];
-      const response = await axios.post(`${LOGIN}`, {
-        user_name,
-        password,
-      },
-      {
-        headers:{
-           'ngrok-skip-browser-warning': 'true'
+      const response = await axios.post(
+        `${LOGIN}`,
+        {
+          user_name,
+          password,
+        },
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
         }
-      }
-    );
+      );
 
       const { token, role, user_id, ...user } = response.data;
       if (token) {
         localStorage.setItem(TOKEN_KEY, token);
         localStorage.setItem("role", role);
         localStorage.setItem("id", user_id);
-        localStorage.setItem("roleFit", "true");
+        localStorage.setItem("needsReload", "true");
         return {
           success: true,
           redirectTo: "/",
@@ -51,7 +53,6 @@ export const authProvider: AuthProvider = {
   logout: async () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem("role");
-    localStorage.removeItem("roleFit");
     localStorage.removeItem("id");
     return {
       success: true,
@@ -61,32 +62,15 @@ export const authProvider: AuthProvider = {
   check: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
 
-    // try {
-    //   const response = await axios.get(CHECK_API, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-
-    //   if (response.status >= 200 && response.status < 299) {
-    //     return {
-    //       authenticated: true,
-    //     };
-    //   }
-    // } catch (error) {
-    //   console.error("Check API error:", error);
-    //   return {
-    //     authenticated: false,
-    //     redirectTo: "/login",
-    //   };
-    // }
-
-    if(token){
+    if (token) {
+      if (localStorage.getItem("needsReload") === "true") {
+        localStorage.removeItem("needsReload");
+        window.location.reload(); 
+      }
       return {
         authenticated: true,
       };
     }
-    
 
     return {
       authenticated: false,
@@ -100,8 +84,7 @@ export const authProvider: AuthProvider = {
     const response = await axios.get(`${GET_CURRENT_USER}${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'ngrok-skip-browser-warning': 'true'
-
+        "ngrok-skip-browser-warning": "true",
       },
     });
 
@@ -115,7 +98,12 @@ export const authProvider: AuthProvider = {
     return null;
   },
   onError: async (error) => {
-    console.error(error);
+    console.log(error);
+    if (error.status == 401) {
+      return {
+        logout: true,
+      };
+    }
     return { error };
   },
 };

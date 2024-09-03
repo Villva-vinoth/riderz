@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { API_URL } from "../constant";
-import { TOKEN_KEY } from "../providers/authProvider";
-
+import { TOKEN_KEY, authProvider } from "../providers/authProvider";
 interface PermissionItem {
   name: string;
   list: string | undefined;
@@ -24,8 +23,7 @@ export const usePriority = () => {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'ngrok-skip-browser-warning': 'true'
-
+              "ngrok-skip-browser-warning": "true",
             },
           }
         );
@@ -45,15 +43,18 @@ export const usePriority = () => {
           return retr;
         });
 
-        // console.log('permissions', per);
         setPermissions(per);
       } catch (err) {
         console.error("Failed to fetch permissions", err);
+        const errorHandled = await authProvider.onError(err as any);
+        if (errorHandled?.logout) {
+          await authProvider.logout({ redirectTo: "/login" });
+        }
       }
     };
 
     const role = localStorage.getItem("role");
-    console.log(role)
+    console.log(role);
     if (role) {
       fetchPermissions(role);
     }
