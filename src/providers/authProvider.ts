@@ -56,7 +56,7 @@ export const authProvider: AuthProvider = {
     localStorage.removeItem("id");
     return {
       success: true,
-      redirectTo: "/login",
+      redirectTo: "/",
     };
   },
   check: async () => {
