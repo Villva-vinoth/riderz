@@ -125,7 +125,7 @@ export const EditVehicleCategory = () => {
     defaultValue: record?.subCategory_id,
   });
 
-  console.log("Records ", record);
+  // console.log("Records ", record);
 
   React.useEffect(() => {
     if (record) {
