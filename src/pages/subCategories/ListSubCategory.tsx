@@ -67,8 +67,8 @@ export const ListSubCategory = () => {
 
                 if (response.status == 200) {
                   // console.log(response);
-                  const blob = await response.data;
-                  const imageUrl = URL.createObjectURL(blob);
+            
+                  const imageUrl = URL.createObjectURL(response.data);
                   setImageSrc(imageUrl);
                 }
               } catch (error) {
