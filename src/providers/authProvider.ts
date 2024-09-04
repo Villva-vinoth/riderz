@@ -65,7 +65,7 @@ export const authProvider: AuthProvider = {
     if (token) {
       if (localStorage.getItem("needsReload") === "true") {
         localStorage.removeItem("needsReload");
-        window.location.reload(); 
+        window.location.reload();
       }
       return {
         authenticated: true,
@@ -81,21 +81,31 @@ export const authProvider: AuthProvider = {
   getIdentity: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
     const id = localStorage.getItem("id");
-    const response = await axios.get(`${GET_CURRENT_USER}${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
 
-    if (response?.data) {
-      return {
-        id: 1,
-        name: `${response?.data?.data?.full_name}`,
-        avatar: "https://i.pravatar.cc/300",
-      };
+    try {
+      const response = await axios.get(`${GET_CURRENT_USER}${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
+
+      if (response?.data) {
+        return {
+          id: 1,
+          name: `${response?.data?.data?.full_name}`,
+          avatar: "https://i.pravatar.cc/300",
+        };
+      }
+      return null;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        // Redirect to the login page if 401 Unauthorized
+        window.location.href = "/login";
+      }
+
+      return null;
     }
-    return null;
   },
   onError: async (error) => {
     console.log(error);
