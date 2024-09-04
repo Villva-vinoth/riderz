@@ -46,7 +46,7 @@ export const CreateCategory = () => {
       status: false,
       corporate_category_access: false,
       category_type: "",
-      priority: "",
+      priority: 1,
       image: "",
     },
   });
@@ -56,6 +56,9 @@ export const CreateCategory = () => {
   const imageInput = watch("image") as string;
 
   const priority = [1, 2, 3, 4, 5, 6];
+
+  console.log("forms erros:",errors)
+
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -76,6 +79,7 @@ export const CreateCategory = () => {
         withCredentials: false,
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "ngrok-skip-browser-warning": "true",
         },
       });
 

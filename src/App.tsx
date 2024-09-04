@@ -35,9 +35,12 @@ import { CreateRole, EditRole, ListRole, ShowRole } from "./pages/Role";
 import { CreateSubCategory, ListSubCategory } from "./pages/subCategories";
 import { CreateUser, EditUser, ListUser } from "./pages/User";
 import { ShowUser } from "./pages/User/ShowUser";
+import {
+  CreateVehicleCategory,
+  ListVehicleCategory,
+} from "./pages/vehicleCategories";
 import { authProvider } from "./providers/authProvider";
 import { dataProvider } from "./providers/dataProvider";
-import { CreateVehicleCategory, ListVehicleCategory } from "./pages/vehicleCategories";
 
 function App() {
   const responsibilityRes = usePriority();
@@ -90,6 +93,8 @@ function App() {
   // ]
 
   const resourceNames = res.map((r) => r.name);
+
+
 
   return (
     <BrowserRouter>
@@ -172,8 +177,11 @@ function App() {
                     </Route>
 
                     <Route path="/vehicle_Categories">
-                        <Route index element={<ListVehicleCategory />} />
-                        <Route path="create" element={<CreateVehicleCategory />} />
+                      <Route index element={<ListVehicleCategory />} />
+                      <Route
+                        path="create"
+                        element={<CreateVehicleCategory />}
+                      />
                     </Route>
 
                     <Route path="*" element={<ErrorComponent />} />

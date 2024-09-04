@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
-import { useEffect } from "react";
 
 export const Dashboard = () => {
-
+  // const nav = useNavigate();
   // useEffect(() => {
   //   const handleState = () => {
   //     if (localStorage.getItem("roleFit") === "true") {
@@ -12,6 +11,17 @@ export const Dashboard = () => {
   //   };
   //   handleState();
   // }, []);
+
+  // useEffect(() => {
+  //   const handleLogin = () => {
+  //     if (!localStorage.getItem("Token")) {
+  //       nav("/login");
+  //     } 
+  //   };
+  //   handleLogin();
+  // }, []);
+
+
 
   return <Box>Dashboard</Box>;
 };

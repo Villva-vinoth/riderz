@@ -72,6 +72,7 @@ export const CreateSubCategory = () => {
       }>(`${apiUrl}/api/image/upload`, formData, {
         withCredentials: false,
         headers: {
+          "ngrok-skip-browser-warning": "true",
           "Access-Control-Allow-Origin": "*",
         },
       });
