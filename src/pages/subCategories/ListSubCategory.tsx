@@ -105,7 +105,7 @@ export const ListSubCategory = () => {
 
           return (
             <>
-              <ShowButton hideText recordItemId={id} />
+              {/* <ShowButton hideText recordItemId={id} /> */}
               <>
                 <EditButton hideText recordItemId={id} />
                 <DeleteButton hideText recordItemId={id} />

@@ -18,12 +18,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useApiUrl } from "@refinedev/core";
-import { Create, useAutocomplete } from "@refinedev/mui";
+import { Edit, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import axios from "axios";
 import * as React from "react";
+import { Controller } from "react-hook-form";
 
-export const CreateVehicleCategory = () => {
+export const EditVehicleCategory = () => {
   const [tabValue, setTabValue] = React.useState("1");
   const [uploading, setUploading] = React.useState(false);
   const [promotionImage, setPromotionImage] = React.useState(false);
@@ -38,83 +39,122 @@ export const CreateVehicleCategory = () => {
 
   const priority = [1, 2, 3, 4, 5, 6];
 
-  const status = ["Active", "InActive"];
+  const status = ["Active", "Inactive"];
 
   const {
     register,
     saveButtonProps,
-    refineCore: { formLoading, onFinish },
+    refineCore: { formLoading, onFinish, query },
     setValue,
     handleSubmit,
     formState: { errors },
     watch,
+    control,
   } = useForm({
-    defaultValues: {
-      vehicle_type: "",
-      base_fare: 0,
-      price_per_km: 0,
-      subcategory_id: "",
-      title: "",
-      vehicle_category_details: "",
-      promotion_image: "",
-      image: "",
-      waiting_grace_mins: 1,
-      interval_mins: 1,
-      waiting_price: 1,
-      no_show_fee: 0,
-      mininum_buffer_mins: 1,
-      cutoff_start: "00:00",
-      cutoff_end: "00:00",
-      always_schedule_start: "00:00",
-      always_schedule_end: "00:00",
-      max_passengers_without_luggage: 0,
-      max_passengers_with_luggage: 0,
-      max_luggage: 0,
-      cashback_value: 0,
-      priority: "",
-      status: "",
-      public_user: false,
-      corporate_user: false,
-      cap_price: 0,
-      per_stop_fare: 0,
-      per_stop_increase_cap_fare: 0,
-      price_per_min: 0,
-      commission_percentage: 0,
-      corporate_vehicle_access: false,
-      cap_price_later: 0,
-      per_stop_fare_later: 0,
-      per_stop_increase_cap_fare_later: 0,
-      base_fare_later: 0,
-      price_per_km_later: 0,
-      price_per_min_later: 0,
-      commission_percentage_later: 0,
-      per_stop_fare_air: 0,
-      seats_allowed: 0,
-      luggage: 0,
-      wheel_chair: 0,
-      base_fare_later_air: 0,
-      commission_percentage_later_air: 0,
-      corporate_airport_access: false,
-      min_hours: 0,
-      max_hours: 0,
-      price_per_min_later_charter: 0,
-      commission_percentage_later_charter: 0,
-      corporate_charter_access: false,
-      malaysia_minimum_booking_minutes: 0,
-      malaysia_minimum_fare: 0,
-      malaysia_base_fare: 0,
-      malaysia_price_per_km: 0,
-      commission_percentage_later_malaysia: 0,
-      corporate_malaysia_access: false,
-      malaysian_charter_min_hours: 0,
-      malaysian_charter_max_hours: 0,
-      price_per_min_later_malaysian_charter: 0,
-      commission_percentage_later_malaysian_charter: 0,
-      corporate_malaysian_charter_access: false,
-      addon_id: [""],
-      maximum_count_adds_on: 0,
-    },
+    // defaultValues: {
+    //   vehicle_type: "",
+    //   base_fare: 0,
+    //   price_per_km: 0,
+    //   subcategory_id: "",
+    //   title: "",
+    //   vehicle_category_details: "",
+    //   promotion_image: "",
+    //   image: "",
+    //   waiting_grace_mins: 1,
+    //   interval_mins: 1,
+    //   waiting_price: 1,
+    //   no_show_fee: 0,
+    //   mininum_buffer_mins: 1,
+    //   cutoff_start: "00:00",
+    //   cutoff_end: "00:00",
+    //   always_schedule_start: "00:00",
+    //   always_schedule_end: "00:00",
+    //   max_passengers_without_luggage: 0,
+    //   max_passengers_with_luggage: 0,
+    //   max_luggage: 0,
+    //   cashback_value: 0,
+    //   priority: "",
+    //   status: "",
+    //   public_user: false,
+    //   corporate_user: false,
+    //   cap_price: 0,
+    //   per_stop_fare: 0,
+    //   per_stop_increase_cap_fare: 0,
+    //   price_per_min: 0,
+    //   commission_percentage: 0,
+    //   corporate_vehicle_access: false,
+    //   cap_price_later: 0,
+    //   per_stop_fare_later: 0,
+    //   per_stop_increase_cap_fare_later: 0,
+    //   base_fare_later: 0,
+    //   price_per_km_later: 0,
+    //   price_per_min_later: 0,
+    //   commission_percentage_later: 0,
+    //   per_stop_fare_air: 0,
+    //   seats_allowed: 0,
+    //   luggage: 0,
+    //   wheel_chair: 0,
+    //   base_fare_later_air: 0,
+    //   commission_percentage_later_air: 0,
+    //   corporate_airport_access: false,
+    //   min_hours: 0,
+    //   max_hours: 0,
+    //   price_per_min_later_charter: 0,
+    //   commission_percentage_later_charter: 0,
+    //   corporate_charter_access: false,
+    //   malaysia_minimum_booking_minutes: 0,
+    //   malaysia_minimum_fare: 0,
+    //   malaysia_base_fare: 0,
+    //   malaysia_price_per_km: 0,
+    //   commission_percentage_later_malaysia: 0,
+    //   corporate_malaysia_access: false,
+    //   malaysian_charter_min_hours: 0,
+    //   malaysian_charter_max_hours: 0,
+    //   price_per_min_later_malaysian_charter: 0,
+    //   commission_percentage_later_malaysian_charter: 0,
+    //   corporate_malaysian_charter_access: false,
+    //   addon_id: [""],
+    //   maximum_count_adds_on: 0,
+    // },
   });
+
+  const record = query?.data?.data;
+
+  const { autocompleteProps: subCategoriesProps } = useAutocomplete({
+    resource: "sub_categories",
+    defaultValue: record?.subCategory_id,
+  });
+
+  console.log("Records ", record);
+
+  React.useEffect(() => {
+    if (record) {
+      setValue("public_user", record?.public_user == "on");
+      setValue("corporate_user", record?.corporate_user == "on");
+      setValue(
+        "corporate_vehicle_access",
+        record.corporate_vehicle_access == "enable"
+      );
+      setValue(
+        "corporate_airport_access",
+        record.corporate_airport_access == "enable"
+      );
+      setValue(
+        "corporate_charter_access",
+        record.corporate_charter_access == "enable"
+      );
+      setValue(
+        "corporate_malaysia_access",
+        record.corporate_malaysia_access == "enable"
+      );
+      setValue(
+        "corporate_malaysian_charter_access",
+        record.corporate_malaysian_charter_access == "enable"
+      );
+      const parsedOptions = record.addon_id.replace(/[{}"]/g, "").split(",");
+      setSelectedOptions(parsedOptions);
+    }
+  }, [record, setValue]);
 
   const publicUser = watch("public_user");
   const corporateUser = watch("corporate_user");
@@ -161,18 +201,15 @@ export const CreateVehicleCategory = () => {
     const value = event.target.value as string[];
     setSelectedOptions(value);
     setValue("addon_id", value);
-    // setSelectedOptions(event.target.value as string[]);
-
-    // setValue('addon_id',selectedOptions)
   };
 
-  console.log("forms errors:", errors);
+  //   console.log("forms errors:", errors);
 
   const onSubmit = (data: any) => {
     console.log(data);
     const transformedData = {
       ...data,
-      status: data.status ? "Active" : "Inactive",
+
       corporate_vehicle_access: data.corporate_vehicle_access
         ? "enable"
         : "disable",
@@ -193,12 +230,8 @@ export const CreateVehicleCategory = () => {
     onFinish(transformedData);
   };
 
-  const { autocompleteProps: subCategoriesProps } = useAutocomplete({
-    resource: "sub_categories",
-  });
-
   return (
-    <Create
+    <Edit
       isLoading={formLoading}
       saveButtonProps={{ ...saveButtonProps, onClick: handleSubmit(onSubmit) }}
     >
@@ -242,27 +275,40 @@ export const CreateVehicleCategory = () => {
               sx={{ flex: 1 }}
             />
 
-            <TextField
-              sx={{ flex: 1 }}
-              defaultValue={""}
-              {...register("subcategory_id", {
-                required: "Sub category is Required",
-              })}
-              label={"Sub category *"}
+            <Controller
+              control={control}
               name="subcategory_id"
-              error={!!(errors as any).subcategory_id?.message}
-              helperText={(errors as any).subcategory_id?.message}
-              select
-            >
-              {subCategoriesProps.options.map((option: any) => (
-                <MenuItem
-                  key={option.sub_category_id}
-                  value={option.sub_category_id}
+              rules={{ required: "Subcategory is Required" }}
+              render={({ field }) => (
+                <TextField
+                  sx={{ flex: 1 }}
+                  value={field.value || record?.subcategory_id || ""}
+                  onChange={(e) => {
+                    const selectionOptions = subCategoriesProps.options.find(
+                      (option) => option.sub_category_id === e.target.value
+                    );
+
+                    field.onChange(
+                      selectionOptions ? selectionOptions.sub_category_id : ""
+                    );
+                  }}
+                  label={"Sub category *"}
+                  id="subcategory_id"
+                  error={!!(errors as any).subcategory_id?.message}
+                  helperText={(errors as any).subcategory_id?.message}
+                  select
                 >
-                  {option.sub_category_type}
-                </MenuItem>
-              ))}
-            </TextField>
+                  {subCategoriesProps.options.map((option: any) => (
+                    <MenuItem
+                      key={option.sub_category_id}
+                      value={option.sub_category_id}
+                    >
+                      {option.sub_category_type}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
           </Box>
           <TextField
             {...register("title", {
@@ -354,7 +400,7 @@ export const CreateVehicleCategory = () => {
               flexWrap="wrap"
               sx={{ marginTop: "5px", flex: 1 }}
             >
-              <label>Priority Image *</label>
+              <label>Promotion Image *</label>
               <label htmlFor="promotion-input">
                 <Input
                   id="promotion-input"
@@ -635,43 +681,55 @@ export const CreateVehicleCategory = () => {
               mb: "15px",
             }}
           >
-            <TextField
-              sx={{ flex: 1 }}
-              defaultValue={""}
-              {...register("priority", {
-                required: "priority is Required",
-              })}
-              label={"priority *"}
+            <Controller
+              control={control}
               name="priority"
-              error={!!(errors as any).priority?.message}
-              helperText={(errors as any).priority?.message}
-              select
-            >
-              {priority.map((option: any) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              sx={{ flex: 1 }}
-              defaultValue={""}
-              {...register("status", {
-                required: "Status is Required",
-              })}
-              label={"Status *"}
+              rules={{ required: "priority is Required" }}
+              render={({ field }) => (
+                <TextField
+                  sx={{ flex: 1 }}
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                  label={"priority *"}
+                  id="priority"
+                  error={!!(errors as any).priority?.message}
+                  helperText={(errors as any).priority?.message}
+                  select
+                >
+                  {priority.map((option: any) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+            <Controller
+              control={control}
               name="status"
-              error={!!(errors as any).status?.message}
-              helperText={(errors as any).status?.message}
-              select
-            >
-              {status.map((option: any) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
+              rules={{ required: "Status is Required" }}
+              render={({ field }) => (
+                <TextField
+                  sx={{ flex: 1 }}
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                  // {...register("status", {
+                  //   required: "Status is Required",
+                  // })}
+                  label={"Status *"}
+                  id="status"
+                  error={!!(errors as any).status?.message}
+                  helperText={(errors as any).status?.message}
+                  select
+                >
+                  {status.map((option: any) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
           </Box>
           <Box
             sx={{
@@ -689,7 +747,7 @@ export const CreateVehicleCategory = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={publicUser}
+                    checked={publicUser || false}
                     onChange={(e) => setValue("public_user", e.target.checked)}
                     color="primary"
                   />
@@ -705,7 +763,7 @@ export const CreateVehicleCategory = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={corporateUser}
+                    checked={corporateUser || false}
                     onChange={(e) =>
                       setValue("corporate_user", e.target.checked)
                     }
@@ -1490,7 +1548,6 @@ export const CreateVehicleCategory = () => {
           </Box>
           <FormControl fullWidth>
             <InputLabel>Adds-on service</InputLabel>
-
             <Select
               multiple
               value={selectedOptions}
@@ -1510,6 +1567,6 @@ export const CreateVehicleCategory = () => {
           </FormControl>
         </TabPanel>
       </TabContext>
-    </Create>
+    </Edit>
   );
 };

@@ -88,7 +88,7 @@ export const ListCategory = () => {
 
           return (
             <>
-              <ShowButton hideText recordItemId={id} />
+              {/* <ShowButton hideText recordItemId={id} /> */}
               <>
                 <EditButton
                   hideText

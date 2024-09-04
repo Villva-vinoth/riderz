@@ -1,4 +1,4 @@
 export * from "./CreateSubCategory";
-export * from "./EditRole";
+export * from "./EditSubCategory";
 export * from "./ListSubCategory";
 export * from "./ShowRole";

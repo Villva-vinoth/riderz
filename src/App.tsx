@@ -23,7 +23,7 @@ import { Header } from "./components/header";
 import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { usePriority } from "./hooks/usePriority";
-import { CreateCategory, ListCategory } from "./pages/categories";
+import { CreateCategory, EditCategory, ListCategory } from "./pages/categories";
 import { Login } from "./pages/login";
 import {
   CreatePermission,
@@ -32,11 +32,16 @@ import {
   ShowPermission,
 } from "./pages/permissions";
 import { CreateRole, EditRole, ListRole, ShowRole } from "./pages/Role";
-import { CreateSubCategory, ListSubCategory } from "./pages/subCategories";
+import {
+  CreateSubCategory,
+  EditSubCategory,
+  ListSubCategory,
+} from "./pages/subCategories";
 import { CreateUser, EditUser, ListUser } from "./pages/User";
 import { ShowUser } from "./pages/User/ShowUser";
 import {
   CreateVehicleCategory,
+  EditVehicleCategory,
   ListVehicleCategory,
 } from "./pages/vehicleCategories";
 import { authProvider } from "./providers/authProvider";
@@ -54,16 +59,19 @@ function App() {
       name: "categories",
       list: "/categories",
       create: "/categories/create",
+      edit: "/categories/edit/:id",
     },
     {
       name: "sub_categories",
       list: "/sub_categories",
       create: "/sub_categories/create",
+      edit: "/sub_categories/edit/:id",
     },
     {
       name: "vehicle_categories",
       list: "/vehicle_categories",
       create: "/vehicle_categories/create",
+      edit: "/vehicle_categories/edit/:id",
     },
     ...responsibilityRes,
   ];
@@ -93,8 +101,6 @@ function App() {
   // ]
 
   const resourceNames = res.map((r) => r.name);
-
-
 
   return (
     <BrowserRouter>
@@ -169,11 +175,13 @@ function App() {
                     <Route path="/categories">
                       <Route index element={<ListCategory />} />
                       <Route path="create" element={<CreateCategory />} />
+                      <Route path="edit/:id" element={<EditCategory />} />
                     </Route>
 
                     <Route path="/sub_categories">
                       <Route index element={<ListSubCategory />} />
                       <Route path="create" element={<CreateSubCategory />} />
+                      <Route path="edit/:id" element={<EditSubCategory />} />
                     </Route>
 
                     <Route path="/vehicle_Categories">
@@ -181,6 +189,10 @@ function App() {
                       <Route
                         path="create"
                         element={<CreateVehicleCategory />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<EditVehicleCategory />}
                       />
                     </Route>
 
@@ -198,11 +210,7 @@ function App() {
                     }
                   >
                     <Route path="/login" element={<Login />} />
-                    {/* <Route path="/register" element={<Register />} /> */}
-                    {/* <Route
-                      path="/forgot-password"
-                      element={<ForgotPassword />}
-                    /> */}
+
                   </Route>
                 </Routes>
 
