@@ -8,7 +8,8 @@ import {
   ShowButton,
   useDataGrid,
 } from "@refinedev/mui";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 export const ListSubCategory = () => {
   const { dataGridProps } = useDataGrid();
 
@@ -52,14 +53,32 @@ export const ListSubCategory = () => {
         align: "center",
         sortable: false,
         renderCell: ({ row }) => {
-          return (
-            <img
-              src={`${apiUrl}/${row.image}`}
-              width={90}
-              height={90}
-              alt="image"
-            />
-          );
+          const [imageSrc, setImageSrc] = useState("");
+
+          useEffect(() => {
+            const fetchImage = async () => {
+              try {
+                const response = await axios.get(`${apiUrl}/${row.image}`, {
+                  responseType: "blob",
+                  headers: {
+                    "ngrok-skip-browser-warning": "true",
+                  },
+                });
+
+                if (response.status == 200) {
+                  // console.log(response);
+                  const blob = await response.data;
+                  const imageUrl = URL.createObjectURL(blob);
+                  setImageSrc(imageUrl);
+                }
+              } catch (error) {
+                console.error("Error fetching the image:", error);
+              }
+            };
+
+            fetchImage();
+          }, [row.image]);
+          return <img src={imageSrc} alt="Image" width={90} height={90} />;
         },
       },
       {
