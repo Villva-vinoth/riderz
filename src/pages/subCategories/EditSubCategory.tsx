@@ -60,8 +60,31 @@ export const EditSubCategory = () => {
   const isAccess = watch("corporate_sub_category_access") === true;
   const imageInput = watch("image") as string;
 
-
   const priority = [1, 2, 3, 4, 5, 6];
+
+  const [imageUrl,setImageUrl] = useState("")
+
+  useEffect(()=>{
+    const img = async () =>{
+    try {
+      const response = await axios.get(`${apiUrl}/${imageInput}`,{
+        responseType: "blob",
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      })
+      if(response.status == 200){
+        console.log("response",response)
+        const image = URL.createObjectURL(response.data)
+        setImageUrl(image)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }        
+    }
+    img()
+},[imageInput])
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>

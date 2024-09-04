@@ -165,9 +165,43 @@ export const EditVehicleCategory = () => {
   const corporateMalaysiaCharterAccess = watch(
     "corporate_malaysian_charter_access"
   );
+
+  const [imageUrls, setImageUrls] = React.useState<{ [key: string]: string }>(
+    {}
+  );
+
   const imageInput = watch("image") as string;
 
   const promotionInput = watch("promotion_image") as string;
+
+  const fetchImage = async (imagePath: string, key: string) => {
+    try {
+      const response = await axios.get(`${apiUrl}/${imagePath}`, {
+        responseType: "blob",
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
+      if (response.status === 200) {
+        const imageUrl = URL.createObjectURL(response.data);
+        setImageUrls((prev) => ({ ...prev, [key]: imageUrl }));
+      }
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (imageInput) {
+      fetchImage(imageInput, "image");
+    }
+  }, [imageInput]);
+
+  React.useEffect(() => {
+    if (promotionInput) {
+      fetchImage(promotionInput, "promotion_image");
+    }
+  }, [promotionInput]);
 
   const onChangeHandler = async (
     event: any,
@@ -388,7 +422,7 @@ export const EditVehicleCategory = () => {
                     maxHeight: 150,
                     objectFit: "contain",
                   }}
-                  src={`${apiUrl}/${imageInput}`}
+                  src={`${imageUrls?.image}`}
                   alt="Uploaded image"
                 />
               )}
@@ -441,7 +475,7 @@ export const EditVehicleCategory = () => {
                     maxHeight: 150,
                     objectFit: "contain",
                   }}
-                  src={`${apiUrl}/${promotionInput}`}
+                  src={`${imageUrls?.promotion_image}`}
                   alt="Uploaded image"
                 />
               )}
@@ -688,7 +722,7 @@ export const EditVehicleCategory = () => {
               render={({ field }) => (
                 <TextField
                   sx={{ flex: 1 }}
-                  value={field.value || ""}
+                  value={field.value || 1}
                   onChange={field.onChange}
                   label={"priority *"}
                   id="priority"

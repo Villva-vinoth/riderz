@@ -61,8 +61,11 @@ export const EditCategory = () => {
         "corporate_category_access",
         record?.corporate_category_access == "enable"
       );
+      
     }
   }, [record, setValue]);
+
+ 
 
   const isActive = watch("status");
   const isAccess = watch("corporate_category_access");
@@ -70,6 +73,29 @@ export const EditCategory = () => {
 
   const priority = [1, 2, 3, 4, 5, 6];
 
+  const [imageUrl,setImageUrl] = useState("")
+
+  useEffect(()=>{
+      const img = async () =>{
+      try {
+        const response = await axios.get(`${apiUrl}/${imageInput}`,{
+          responseType: "blob",
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        })
+        if(response.status == 200){
+          console.log("response",response)
+          const image = URL.createObjectURL(response.data)
+          setImageUrl(image)
+        }
+
+      } catch (error) {
+        console.log(error)
+      }        
+      }
+      img()
+  },[imageInput])
   // console.log("forms erros:", errors);
 
   const onChangeHandler = async (
@@ -170,7 +196,7 @@ export const EditCategory = () => {
                 maxHeight: 150,
                 objectFit: "contain",
               }}
-              src={`${apiUrl}/${imageInput}`}
+              src={`${imageUrl}`}
               alt="Uploaded image"
             />
           )}
