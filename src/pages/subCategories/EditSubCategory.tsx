@@ -213,7 +213,7 @@ export const EditSubCategory = () => {
                 maxHeight: 150,
                 objectFit: "contain",
               }}
-              src={`${apiUrl}/${imageInput}`}
+              src={`${imageUrl}`}
               alt="Uploaded image"
             />
           )}
