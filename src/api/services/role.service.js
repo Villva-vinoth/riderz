@@ -51,5 +51,37 @@ module.exports = {
         catch (error) {
             return callback(error)
         }
+    },
+    updateRole: async(data,callback)=>{
+        try {
+            const update_role = await RoleModel.update(data,{
+                where:{
+                    role_id:data.id
+                }
+            })
+            if (update_role[0] > 0) { 
+                return callback(null, `Role updated successfully for : ${data.role_id}`);
+            } else {
+                throw new Error('Role not found or nothing to update!');
+            }
+        } catch (error) {
+            return callback(error)
+        }
+    },
+    deleteRole: async(data,callback)=>{
+        try {
+            const deleted_role = await RoleModel.destroy({
+                where: {
+                    role_id: data.id, 
+                }
+            });
+            if (deleted_role > 0) {
+                return callback(null, `Role deleted successfully for : ${data.role_id}`);
+            } else {
+                throw new Error('Role not found!');
+            }
+        } catch (error) {
+            return callback(error);
+        }
     }
 }

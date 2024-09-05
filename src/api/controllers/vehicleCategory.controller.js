@@ -1,10 +1,8 @@
-const { authentication } = require('../middlewares/auth.js')
-const { createAdminUser, getAllUser, getOneUser, getOneUsername, deleteUser, updateUser } = require('../services/adminUser.service.js')
-const bcrypt = require('bcrypt')
+const { createVehicleCategory, getAllVehicleCategory, getOneVehicleCategory, deleteVehicleCategory, updateVehicleCategory } = require('../services/vehicleCategory.service.js')
 module.exports = {
-    createAdminUser: async (req, res) => {
+    createVehicleCategory: async (req, res) => {
         const data = req.body
-        createAdminUser(data, (err, result) => {
+        createVehicleCategory(data, (err, result) => {
             if (err) {
                 return res.status(500).json({
                     sucess: false,
@@ -17,8 +15,8 @@ module.exports = {
             })
         })
     },
-    getAllUser: async (req, res) => {
-        getAllUser((err, result) => {
+    getAllVehicleCategory: async (req, res) => {
+        getAllVehicleCategory((err, result) => {
             if (err) {
                 return res.status(500).json({
                     success: false,
@@ -31,9 +29,9 @@ module.exports = {
             })
         })
     },
-    getOneUser: async (req, res) => {
+    getOneVehicleCategory: async (req, res) => {
         const data = req.params;
-        getOneUser(data, (err, result) => {
+        getOneVehicleCategory(data, (err, result) => {
             if (err) {
                 return res.status(500).json({
                     success: false,
@@ -46,37 +44,10 @@ module.exports = {
             })
         })
     },
-    login: async (req, res) => {
-        const body = req.body;
-        getOneUsername(body, async (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: err.message
-                })
-            }
-            const checkPassword = await bcrypt.compare(body.password, result.password);
-            if (checkPassword) {
-                const token = await authentication(result.user_id);
-                return res.status(200).json({
-                    success: true,
-                    user_name: result.user_name,
-                    user_id: result.user_id,
-                    full_name: result.full_name,
-                    role: result.role,
-                    token: token
-                })
-            }
-
-            return res.status(401).json({
-                success: true,
-                message: 'password is Invalid'
-            })
-        })
-    },
-    updateUser: async (req, res) => {
+   
+    updateVehicleCategory: async (req, res) => {
         const data = { ...req.body, id: req.params.id }
-        updateUser(data, (err, result) => {
+        updateVehicleCategory(data, (err, result) => {
             if (err) {
                 return res.status(500).json({
                     success: false,
@@ -89,9 +60,9 @@ module.exports = {
             })
         })
     },
-    deleteUser: async (req, res) => {
+    deleteVehicleCategory: async (req, res) => {
         const data = req.params
-        deleteUser(data, (err, result) => {
+        deleteVehicleCategory(data, (err, result) => {
             if (err) {
                 return res.status(500).json({
                     success: false,

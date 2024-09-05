@@ -94,6 +94,38 @@ module.exports = {
         catch (error) {
             return callback(error)
         }
+    },
+    updateUser: async(data,callback)=>{
+        try {
+            const update = await AdminUserModel.update(data,{
+                where:{
+                    user_id:data.id
+                }
+            })
+            if (update[0] > 0) { 
+                return callback(null, `User updated successfully for ${data.user_name}`);
+            } else {
+                throw new Error('User not found or nothing to update!');
+            }
+        } catch (error) {
+            return callback(error)
+        }
+    },
+    deleteUser: async(data,callback)=>{
+        try {
+            const deleted = await AdminUserModel.destroy({
+                where: {
+                    user_id: data.id, 
+                }
+            });
+            if (deleted > 0) {
+                return callback(null, `User deleted successfully`);
+            } else {
+                throw new Error('User not found!');
+            }
+        } catch (error) {
+            return callback(error);
+        }
     }
 
 }

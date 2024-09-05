@@ -6,7 +6,7 @@ module.exports = {
             const existingPermission = await permissionModel.findOne({
                 where: {
                     role: data.role,
-                    resources: data.resources
+                    resources: data.resources,
                 }
             });
             if (existingPermission) {
@@ -92,5 +92,38 @@ module.exports = {
         catch (error) {
             return callback(error)
         }
+    },
+    updatePermission: async(data,callback)=>{
+        try {
+            const updatePermissions = await permissionModel.update(data,{
+                where:{
+                    permission_id:data.id
+                }
+            })
+            if (updatePermissions[0] > 0) { 
+                return callback(null, `Permission updated successfully for : ${data.permission_id}`);
+            } else {
+                throw new Error('Permission not found or nothing to update!');
+            }
+        } catch (error) {
+            return callback(error)
+        }
+    },
+    deletePermission: async(data,callback)=>{
+        try {
+            const deletedPermission = await permissionModel.destroy({
+                where: {
+                    permission_id: data.id, 
+                }
+            });
+            if (deletedPermission > 0) {
+                return callback(null, `Permission deleted successfully for : ${data.permission_id}`);
+            } else {
+                throw new Error('Permission not found!');
+            }
+        } catch (error) {
+            return callback(error);
+        }
     }
+
 }

@@ -1,4 +1,4 @@
-const { createRole, getAllRole, getOneRole } = require('../services/role.service.js')
+const { createRole, getAllRole, getOneRole, updateRole, deleteRole } = require('../services/role.service.js')
 
 module.exports = {
     createRole: async (req, res) => {
@@ -45,5 +45,35 @@ module.exports = {
             })
         })
     },
+    updateRole: async (req, res) => {
+        const data = { ...req.body, id: req.params.id }
+        updateRole(data, (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: err.message
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                message: result
+            })
+        })
+    },
+    deleteRole: async (req, res) => {
+        const data = req.params
+        deleteRole(data, (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: err.message
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                data: result
+            })
+        })
+    }
 
 }

@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
+const path =require('path')
 
 const sequelize = require('./src/db/config/sequelizeConnect.js')
 const initiateRouter = require('./src/api/helpers/baseRouter.js')
@@ -40,6 +41,8 @@ app.get('/',(req,res)=>{
 
 app.use('/api',initiateRouter);
 
+app.use('/public/uploads',express.static(path.join(__dirname,'public/uploads',)))
+console.log(path.join(__dirname,'public/*'))
 app.listen(port,()=>{
     console.log(`listening to the port `,port)
 })
