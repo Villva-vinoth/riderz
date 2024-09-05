@@ -65,27 +65,26 @@ export const EditSubCategory = () => {
   const [imageUrl,setImageUrl] = useState("")
 
   useEffect(()=>{
-    const img = async () =>{
-    try {
-      const response = await axios.get(`${apiUrl}/${imageInput}`,{
-        responseType: "blob",
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      })
-      if(response.status == 200){
-        console.log("response",response)
-        const image = URL.createObjectURL(response.data)
-        setImageUrl(image)
+      const img = async () =>{
+      try {
+        const response = await axios.get(`${apiUrl}/${imageInput}`,{
+          responseType: "blob",
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        })
+        if(response.status == 200){
+          console.log("response",response)
+          const image = URL.createObjectURL(response.data)
+          setImageUrl(image)
+        }
+
+      } catch (error) {
+        console.log(error)
+      }        
       }
-
-    } catch (error) {
-      console.log(error)
-    }        
-    }
-    img()
-},[imageInput])
-
+      img()
+  },[imageInput])
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

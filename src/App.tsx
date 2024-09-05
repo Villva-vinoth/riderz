@@ -23,6 +23,7 @@ import { Header } from "./components/header";
 import { CustomHeader } from "./components/sidebar/CustomHeader";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { usePriority } from "./hooks/usePriority";
+import { CreateSelectCategory } from "./pages/bookingCategory";
 import { CreateCategory, EditCategory, ListCategory } from "./pages/categories";
 import { Login } from "./pages/login";
 import {
@@ -55,6 +56,11 @@ function App() {
     //   name: "booking",
     //   list: "/bookings",
     // },
+    {
+      name: "selectCategory",
+      list: "/selectCategory",
+      create: "/selectCategory/create",
+    },
     {
       name: "categories",
       list: "/categories",
@@ -140,6 +146,9 @@ function App() {
                     {/* <Route path="/bookings">
                     <Route index element={<BookingForm />} />
                     </Route> */}
+                    <Route path="/selectCategory">
+                      <Route index element={<CreateSelectCategory />} />
+                    </Route>
 
                     <Route path="/roles">
                       <Route index element={<ListRole />} />
@@ -210,7 +219,6 @@ function App() {
                     }
                   >
                     <Route path="/login" element={<Login />} />
-
                   </Route>
                 </Routes>
 
